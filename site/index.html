@@ -271,6 +271,62 @@
   .contact .cta { justify-content: center; position: relative; }
   footer { padding: 40px 0; text-align: center; color: var(--muted); font-size: 14px; }
 
+  /* python bubble */
+  .bubble.code { padding: 10px 14px; border-radius: 14px 14px 14px 4px; font-weight: 500; min-width: 200px; cursor: default; }
+  .bubble .py { display: block; font-size: 11.5px; font-weight: 700; color: var(--warm); letter-spacing: .04em; margin-bottom: 3px; }
+  .bubble code { font: 500 13.5px ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; color: var(--text); }
+  .bubble .prompt { color: var(--accent); }
+  .caret { display: inline-block; width: 7px; height: 15px; margin-left: 2px; vertical-align: -2px; background: var(--accent); animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .avatar-ring { cursor: pointer; }
+  .avatar-ring.boing { animation: boing .6s cubic-bezier(.3,1.6,.5,1); }
+  @keyframes boing { 0% { transform: scale(1); } 40% { transform: scale(.94) rotate(-3deg); } 100% { transform: scale(1); } }
+
+  /* progress + to top */
+  .progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; z-index: 60; background: linear-gradient(90deg, var(--accent), var(--warm)); }
+  .to-top {
+    position: fixed; right: 20px; bottom: 20px; z-index: 55; width: 46px; height: 46px; border-radius: 14px;
+    border: 1px solid var(--line); background: var(--card); color: var(--accent); cursor: pointer; box-shadow: var(--shadow);
+    display: grid; place-items: center; opacity: 0; transform: translateY(12px); pointer-events: none; transition: opacity .3s, transform .3s, border-color .2s;
+  }
+  .to-top.show { opacity: 1; transform: none; pointer-events: auto; }
+  .to-top:hover { border-color: var(--accent); }
+  .to-top svg { width: 20px; height: 20px; }
+
+  /* tilt + spotlight cards */
+  .tilt { position: relative; transform-style: preserve-3d; will-change: transform; }
+  .tilt::after {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .3s;
+    background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--accent) 16%, transparent), transparent 70%);
+  }
+  .tilt:hover::after { opacity: 1; }
+
+  /* know more */
+  .more-btn {
+    align-self: flex-start; margin-top: 20px; display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 12px;
+    border: 1px solid var(--accent); background: var(--accent-soft); color: var(--accent); font: 600 15px var(--font-body); cursor: pointer; transition: background .2s, transform .2s;
+  }
+  .more-btn:hover { transform: translateY(-2px); }
+  .more-btn svg { width: 18px; height: 18px; transition: transform .35s; }
+  .more-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
+  .more { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .5s ease, margin .5s; }
+  .more.open { grid-template-rows: 1fr; margin-top: 24px; }
+  .more-in { overflow: hidden; display: grid; grid-template-columns: 1fr 1.15fr; gap: 24px; min-height: 0; }
+  .more-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; }
+  .more h3 { font-size: 20px; margin-bottom: 14px; }
+  .more-card > p { color: var(--muted); }
+  .more-card > p + p { margin-top: 12px; }
+  .more-meta { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line); display: grid; grid-template-columns: 120px 1fr; row-gap: 8px; font-size: 15px; }
+  .more-meta dt { color: var(--muted); }
+  .more-meta dd { color: var(--text); font-weight: 500; }
+  .more-links { margin-top: 20px; display: flex; gap: 22px; }
+  .more-links a { color: var(--accent); font-weight: 600; font-size: 15px; border-bottom: 1px solid transparent; transition: border-color .2s; }
+  .more-links a:hover { border-color: var(--accent); }
+  .more .timeline { margin-top: 4px; }
+  .more .tl { background: var(--card-2); }
+  .tl h4 { margin-top: 4px; font-family: var(--font-head); font-size: 17px; line-height: 1.3; }
+  .tl .what { margin-top: 6px; color: var(--muted); font-size: 14.5px; }
+
   /* reveal on scroll */
   .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s, transform .7s; }
   .reveal.in { opacity: 1; transform: none; }
@@ -281,9 +337,9 @@
 
   /* ---------- responsive ---------- */
   @media (max-width: 920px) {
-    .hero-grid, .about-grid { grid-template-columns: 1fr; }
+    .hero-grid, .about-grid, .more-in { grid-template-columns: 1fr; }
     .avatar-wrap { order: -1; width: min(260px, 70%); }
-    .bubble { left: -10%; }
+    .bubble { left: -18%; }
     .skills { grid-template-columns: 1fr 1fr; }
     .services, .certs { grid-template-columns: 1fr 1fr; }
     .links { display: none; }
@@ -298,7 +354,9 @@
     .play-side { border-left: 0; border-top: 1px solid var(--line); }
     .logo-name { display: none; }
     .chip-a { right: -14%; }
-    .chip-b { left: -12%; }
+    .chip-b { left: -12%; bottom: auto; top: 4%; }
+    .bubble.code { top: auto; bottom: -6%; left: -16%; min-width: 0; }
+    .avatar-wrap { margin-bottom: 26px; }
     .contact { padding: 44px 20px; }
     section.block { padding-top: 70px; }
   }
@@ -306,6 +364,7 @@
 </head>
 <body>
 
+<div class="progress" id="progress"></div>
 <nav>
   <div class="wrap nav-in">
     <a href="#top" class="logo"><span class="logo-mark">ZE</span><span class="logo-name">Zineb Ennakhla</span></a>
@@ -314,7 +373,6 @@
       <a href="#skills" data-i18n="nav.skills">Compétences</a>
       <a href="#projects" data-i18n="nav.projects">Projets</a>
       <a href="#certs" data-i18n="nav.certs">Certifications</a>
-      <a href="#education" data-i18n="nav.edu">Formation</a>
       <a href="#contact" data-i18n="nav.contact">Contact</a>
     </div>
     <div class="toggles">
@@ -344,8 +402,8 @@
         </div>
       </div>
       <div class="avatar-wrap">
-        <div class="avatar-ring"><img src="avatar.jpg" alt="Avatar de Zineb Ennakhla" width="640" height="640"></div>
-        <div class="bubble" data-i18n="hero.bubble">Salam ! 👋</div>
+        <div class="avatar-ring" id="avatar" title=""><img src="avatar.jpg" alt="Avatar de Zineb Ennakhla" width="640" height="640"></div>
+        <div class="bubble code" aria-hidden="true"><span class="py">🐍 Python</span><code><span class="prompt">&gt;&gt;&gt;</span> <span id="pyLine"></span><span class="caret"></span></code></div>
         <div class="float-chip chip-a"><b>SQL</b> SELECT *</div>
         <div class="float-chip chip-b">📊 <b>Power BI</b></div>
       </div>
@@ -372,8 +430,54 @@
       <div class="card about-text">
         <p data-i18n-html="about.p1">Je suis <strong>Data Analyst et Développeuse IA</strong>, basée à Tanger.</p>
         <p data-i18n="about.p2">J'aide les entreprises et les porteurs de projets à comprendre leurs données : je les nettoie, je les analyse et je les transforme en tableaux de bord et en modèles d'IA simples à utiliser.</p>
+        <button class="more-btn" id="moreBtn" aria-expanded="false" aria-controls="moreBox">
+          <span data-i18n="more.open">En savoir plus sur moi</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
       </div>
     </div>
+
+    <div class="more" id="moreBox" hidden>
+      <div class="more-in">
+        <div class="more-card">
+          <h3 data-i18n="more.who">Qui suis-je ?</h3>
+          <p data-i18n="more.p1">Je suis en formation de Technicienne Spécialisée en Intelligence Artificielle à l'ISTA NTIC de Tanger (OFPPT), option Assistante Data Analyste.</p>
+          <p data-i18n="more.p2">Mon travail couvre tout le cycle de la donnée : collecte et nettoyage avec Python et SQL, analyse exploratoire et statistiques, visualisation et tableaux de bord sous Power BI et Excel, puis modèles de Machine Learning et de Deep Learning.</p>
+          <p data-i18n="more.p3">Aujourd'hui, je propose mes services en freelance en tant que Data Analyst, Data Scientist et Développeuse IA. Curieuse et rigoureuse, j'aime transformer des données brutes en informations claires qui facilitent la prise de décision.</p>
+          <dl class="more-meta">
+            <dt data-i18n="more.loc.k">Localisation</dt><dd data-i18n="more.loc.v">Tanger, Maroc</dd>
+            <dt data-i18n="more.lang.k">Langues</dt><dd data-i18n="more.lang.v">Arabe (langue maternelle), français et anglais (intermédiaire)</dd>
+            <dt data-i18n="more.av.k">Disponibilité</dt><dd data-i18n="more.av.v">Missions freelance</dd>
+          </dl>
+          <div class="more-links">
+            <a href="https://www.linkedin.com/in/zineb-ennakhla-55b50b387/" target="_blank" rel="noopener">LinkedIn ↗</a>
+            <a href="https://github.com/zineb-stack" target="_blank" rel="noopener">GitHub ↗</a>
+          </div>
+        </div>
+        <div class="more-card">
+          <h3 data-i18n="more.journey">Mon parcours</h3>
+          <div class="timeline">
+            <div class="tl">
+              <div class="when" data-i18n="j1.w">Aujourd'hui</div>
+              <h4 data-i18n="j1.t">Data Analyst & Développeuse IA freelance</h4>
+              <div class="what" data-i18n="j1.d">Analyse de données, tableaux de bord et modèles d'IA pour les entreprises et les porteurs de projets.</div>
+            </div>
+            <div class="tl">
+              <div class="when" data-i18n="j2.w">2025 – Présent</div>
+              <h4 data-i18n="j2.t">Technicienne Spécialisée en Intelligence Artificielle</h4>
+              <div class="where" data-i18n="j2.p">Option Assistante Data Analyste · OFPPT, ISTA NTIC, Tanger</div>
+              <div class="what" data-i18n="j2.d">Python, SQL, statistiques, Power BI, Machine Learning et Deep Learning. Projets : MaisonLux, NeuroDetect et GlutiSafe.</div>
+            </div>
+            <div class="tl">
+              <div class="when">2025</div>
+              <h4 data-i18n="j3.t">Baccalauréat en Sciences Physiques</h4>
+              <div class="where">Lycée Moulay Ali Cherif, Tanger</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="services">
       <div class="service">
         <div class="skill-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 16v-4M12 16V8M16 16v-6"/></svg></div>
@@ -560,24 +664,6 @@
     </div>
   </section>
 
-  <!-- EDUCATION -->
-  <section class="block reveal" id="education">
-    <div class="kicker" data-i18n="edu.kicker">Formation</div>
-    <h2 class="sec-title" data-i18n="edu.title">Mon parcours</h2>
-    <div class="timeline">
-      <div class="tl">
-        <div class="when" data-i18n="edu.1.when">2025 – Présent</div>
-        <h3 data-i18n="edu.1.title">Technicienne Spécialisée en Intelligence Artificielle</h3>
-        <div class="where" data-i18n="edu.1.where">Option Assistante Data Analyste · OFPPT, ISTA NTIC, Tanger</div>
-      </div>
-      <div class="tl">
-        <div class="when">2025</div>
-        <h3 data-i18n="edu.2.title">Baccalauréat en Sciences Physiques</h3>
-        <div class="where">Lycée Moulay Ali Cherif, Tanger</div>
-      </div>
-    </div>
-  </section>
-
   <!-- CONTACT -->
   <section class="contact reveal" id="contact">
     <h2 data-i18n="contact.title">Un projet en tête ? 🤝</h2>
@@ -586,6 +672,7 @@
       <a href="mailto:ennakhlazineb@gmail.com" class="btn primary">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
         ennakhlazineb@gmail.com</a>
+      <a href="https://www.linkedin.com/in/zineb-ennakhla-55b50b387/" target="_blank" rel="noopener" class="btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>LinkedIn</a>
       <a href="https://github.com/zineb-stack" target="_blank" rel="noopener" class="btn">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a11.5 11.5 0 0 0-3.6 22.4c.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.2c0 .3.2.7.8.6A11.5 11.5 0 0 0 12 .5z"/></svg>GitHub</a>
       <a href="CV_Zineb_Ennakhla.pdf" class="btn" download>
@@ -594,6 +681,8 @@
     </div>
   </section>
 </main>
+
+<button class="to-top" id="toTop" aria-label="Haut de page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg></button>
 
 <footer>
   <div class="wrap">© <span id="yr"></span> Zineb Ennakhla · <span data-i18n="footer">Fait avec ☕ et beaucoup de données à Tanger</span></div>
@@ -604,12 +693,12 @@
 const T = {
   fr: {},  // French is the HTML default; filled in automatically below
   en: {
-    "nav.about": "About", "nav.skills": "Skills", "nav.projects": "Projects", "nav.edu": "Education", "nav.contact": "Contact",
+    "nav.about": "About", "nav.skills": "Skills", "nav.projects": "Projects", "nav.contact": "Contact",
     "hero.badge": "Available for freelance projects",
     "hero.hello": "Hi, I'm <b>Zineb Ennakhla</b>", "hero.cta0": "Start a project",
     "hero.title": "Turning messy data into something <em>everyone<svg viewBox=\"0 0 200 12\" preserveAspectRatio=\"none\"><path d=\"M2 8 C 50 2, 150 2, 198 7\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\" stroke-linecap=\"round\"/></svg></em> can understand.",
     "hero.lead": "Data cleaning, analysis and visualization with Python, SQL, Excel and Power BI, with a touch of Machine Learning.",
-    "hero.cta1": "See my projects", "hero.cta2": "Download my CV", "hero.bubble": "Salam! 👋",
+    "hero.cta1": "See my projects", "hero.cta2": "Download my CV", 
     "play.title": "Try it yourself ✨",
     "play.text": "This data is a mess. One click, and it becomes readable. That's exactly what I do.",
     "play.btn": "Clean the data", "play.btn2": "Mess it up again",
@@ -636,16 +725,26 @@ const T = {
     "p4.desc": "App that detects gluten in food products with a simple scan.",
     "p4.t1": "App", "p4.t2": "Scan",
     "empty.title": "Coming soon!", "empty.text": "Projects in this category are being prepared.",
-    "edu.kicker": "Education", "edu.title": "My journey",
-    "edu.1.when": "2025 – Present", "edu.1.title": "Specialized Technician in Artificial Intelligence",
-    "edu.1.where": "Data Analyst Assistant track · OFPPT, ISTA NTIC, Tangier",
-    "edu.2.title": "High School Diploma in Physical Sciences",
+    "more.open": "Learn more about me", "more.close": "Show less", "more.who": "Who am I?", "more.journey": "My journey",
+    "more.p1": "I'm training as a Specialized Technician in Artificial Intelligence at ISTA NTIC in Tangier (OFPPT), Data Analyst Assistant track.",
+    "more.p2": "My work covers the whole data cycle: collection and cleaning with Python and SQL, exploratory analysis and statistics, visualization and dashboards in Power BI and Excel, then Machine Learning and Deep Learning models.",
+    "more.p3": "Today, I offer freelance services as a Data Analyst, Data Scientist and AI Developer. Curious and rigorous, I love turning raw data into clear information that makes decisions easier.",
+    "more.loc.k": "Location", "more.loc.v": "Tangier, Morocco",
+    "more.lang.k": "Languages", "more.lang.v": "Arabic (native), French and English (intermediate)",
+    "more.av.k": "Availability", "more.av.v": "Freelance projects",
+    "j1.w": "Today", "j1.t": "Freelance Data Analyst & AI Developer",
+    "j1.d": "Data analysis, dashboards and AI models for businesses and project owners.",
+    "j2.w": "2025 – Present", "j2.t": "Specialized Technician in Artificial Intelligence",
+    "j2.p": "Data Analyst Assistant track · OFPPT, ISTA NTIC, Tangier",
+    "j2.d": "Python, SQL, statistics, Power BI, Machine Learning and Deep Learning. Projects: MaisonLux, NeuroDetect and GlutiSafe.",
+    "j3.t": "High School Diploma in Physical Sciences",
     "contact.title": "Have a project in mind? 🤝",
     "contact.text": "Data analysis, a dashboard, an AI model… Tell me about your project and I'll get back to you quickly.",
     "footer": "Made with ☕ and lots of data in Tangier"
   }
 };
 T.fr["play.btn2"] = "Remettre le désordre";
+T.fr["more.close"] = "Voir moins";
 document.querySelectorAll("[data-i18n]").forEach(el => T.fr[el.dataset.i18n] = el.textContent);
 document.querySelectorAll("[data-i18n-html]").forEach(el => T.fr[el.dataset.i18nHtml] = el.innerHTML);
 
@@ -659,6 +758,7 @@ function setLang(l) {
   document.title = l === "fr" ? "Zineb Ennakhla | Data Analyst" : "Zineb Ennakhla | Data Analyst";
   updateCleanBtn();
   if (typeof showRole === "function") showRole();
+  if (typeof moreLabel === "function") moreLabel();
   try { localStorage.setItem("ze-lang", l); } catch (e) {}
 }
 document.getElementById("langBtn").addEventListener("click", () => setLang(lang === "fr" ? "en" : "fr"));
@@ -780,6 +880,60 @@ document.querySelectorAll('a[href^="#"]').forEach(link => link.addEventListener(
   e.preventDefault();
   (target || document.body).scrollIntoView({ behavior: "smooth", block: "start" });
 }));
+
+/* ---------------- python bubble (typing) ---------------- */
+const PY = ['import pandas as pd', 'df = pd.read_csv("data.csv")', 'df = df.dropna()', 'df.describe()', 'model.fit(X, y)', 'plt.show()  # 📊', 'print("Salam! 👋")'];
+const pyEl = document.getElementById("pyLine");
+let pyI = 0, pyTimer = null;
+function typeLine(txt) {
+  clearTimeout(pyTimer);
+  let k = 0;
+  (function tick() {
+    pyEl.textContent = txt.slice(0, k);
+    if (k++ < txt.length) pyTimer = setTimeout(tick, 55);
+    else pyTimer = setTimeout(() => { pyI = (pyI + 1) % PY.length; typeLine(PY[pyI]); }, 1700);
+  })();
+}
+typeLine(PY[0]);
+const avatar = document.getElementById("avatar");
+avatar.addEventListener("click", () => {
+  avatar.classList.remove("boing"); void avatar.offsetWidth; avatar.classList.add("boing");
+  pyI = (pyI + 1) % PY.length; typeLine(PY[pyI]);
+});
+
+/* ---------------- know more ---------------- */
+const moreBtn = document.getElementById("moreBtn"), moreBox = document.getElementById("moreBox");
+moreBox.hidden = false;
+function moreLabel() { moreBtn.querySelector("span").textContent = T[lang][moreBox.classList.contains("open") ? "more.close" : "more.open"]; }
+moreBtn.addEventListener("click", () => {
+  const open = moreBox.classList.toggle("open");
+  moreBtn.setAttribute("aria-expanded", open);
+  moreLabel();
+  if (open) setTimeout(() => moreBox.scrollIntoView({ behavior: "smooth", block: "nearest" }), 350);
+});
+
+/* ---------------- progress bar + back to top ---------------- */
+const prog = document.getElementById("progress"), toTop = document.getElementById("toTop");
+function onScroll() {
+  const max = document.documentElement.scrollHeight - innerHeight;
+  prog.style.width = (max > 0 ? scrollY / max * 100 : 0) + "%";
+  toTop.classList.toggle("show", scrollY > 600);
+}
+addEventListener("scroll", onScroll, { passive: true }); onScroll();
+toTop.addEventListener("click", () => scrollTo({ top: 0, behavior: "smooth" }));
+
+/* ---------------- tilt + spotlight on cards (mouse only) ---------------- */
+if (matchMedia("(hover: hover) and (pointer: fine)").matches && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  document.querySelectorAll(".proj, .service, .skill-card, .cert").forEach(card => {
+    card.classList.add("tilt");
+    card.addEventListener("mousemove", e => {
+      const r = card.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+      card.style.setProperty("--mx", x * 100 + "%"); card.style.setProperty("--my", y * 100 + "%");
+      card.style.transform = `perspective(900px) rotateX(${(.5 - y) * 6}deg) rotateY(${(x - .5) * 6}deg) translateY(-4px)`;
+    });
+    card.addEventListener("mouseleave", () => { card.style.transform = ""; });
+  });
+}
 
 /* ---------------- init ---------------- */
 document.getElementById("yr").textContent = new Date().getFullYear();
