@@ -42,7 +42,9 @@ def data_uri(path: Path, mime: str) -> str:
 
 
 @st.cache_data
-def build_page() -> str:
+def build_page(version: float) -> str:
+    # "version" = date de modification des fichiers : quand index.html change,
+    # le cache est ignoré et la nouvelle version s'affiche.
     html = (SITE / "index.html").read_text(encoding="utf-8")
     # Dans Streamlit, la page ne peut pas charger les fichiers voisins :
     # on intègre donc la photo et le CV directement dans le HTML.
@@ -51,7 +53,11 @@ def build_page() -> str:
         'href="CV_Zineb_Ennakhla.pdf"',
         f'href="{data_uri(SITE / "CV_Zineb_Ennakhla.pdf", "application/pdf")}"',
     )
+    # Images des projets (dossier site/projects)
+    for img in sorted((SITE / "projects").glob("*.jpg")):
+        html = html.replace(f'src="projects/{img.name}"', f'src="{data_uri(img, "image/jpeg")}"')
     return html
 
 
-components.html(build_page(), height=900, scrolling=True)
+version = max(f.stat().st_mtime for f in SITE.rglob("*") if f.is_file())
+components.html(build_page(version), height=900, scrolling=True)

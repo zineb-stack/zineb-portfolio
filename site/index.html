@@ -154,6 +154,7 @@
   .float-chip b { color: var(--accent); }
   .chip-a { right: -8%; top: 46%; animation: float 5s 1s ease-in-out infinite; }
   .chip-b { left: -6%; bottom: 8%; animation: float 5.5s .5s ease-in-out infinite; }
+  .chip-py { left: -4%; top: 10%; animation: float 5.2s .2s ease-in-out infinite; }
 
   /* ---------- clean-the-data playground ---------- */
   .play {
@@ -229,9 +230,15 @@
   }
   .proj:hover { transform: translateY(-6px); box-shadow: var(--shadow); border-color: color-mix(in srgb, var(--accent) 50%, var(--line)); }
   .hide { display: none !important; }
-  .thumb { height: 190px; background: linear-gradient(135deg, var(--bg-2), var(--card-2)); border-bottom: 1px solid var(--line); display: grid; place-items: center; position: relative; }
+  .thumb { height: 210px; background: linear-gradient(135deg, var(--bg-2), var(--card-2)); border-bottom: 1px solid var(--line); display: grid; place-items: center; position: relative; }
+  .thumb { overflow: hidden; }
   .thumb svg { width: 72%; height: 78%; }
-  .thumb .cat { position: absolute; top: 14px; left: 14px; padding: 5px 11px; border-radius: 999px; background: var(--card); border: 1px solid var(--line); font-size: 12px; font-weight: 600; color: var(--accent); }
+  .thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: transform .5s; }
+  .thumb.chart { background: #fff; }
+  .thumb.chart img { object-fit: contain; object-position: center; padding: 10px 14px 6px; }
+  .proj:hover .thumb img { transform: scale(1.04); }
+  .proj-links a.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .thumb .cat { z-index: 1; position: absolute; top: 14px; left: 14px; padding: 5px 11px; border-radius: 999px; background: var(--card); border: 1px solid var(--line); font-size: 12px; font-weight: 600; color: var(--accent); }
   .proj-body { padding: 24px; display: flex; flex-direction: column; flex: 1; }
   .proj h3 { font-size: 20px; }
   .proj .sub { color: var(--accent); font-weight: 600; font-size: 14px; margin-top: 4px; }
@@ -271,13 +278,6 @@
   .contact .cta { justify-content: center; position: relative; }
   footer { padding: 40px 0; text-align: center; color: var(--muted); font-size: 14px; }
 
-  /* python bubble */
-  .bubble.code { padding: 10px 14px; border-radius: 14px 14px 14px 4px; font-weight: 500; min-width: 200px; cursor: default; }
-  .bubble .py { display: block; font-size: 11.5px; font-weight: 700; color: var(--warm); letter-spacing: .04em; margin-bottom: 3px; }
-  .bubble code { font: 500 13.5px ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; color: var(--text); }
-  .bubble .prompt { color: var(--accent); }
-  .caret { display: inline-block; width: 7px; height: 15px; margin-left: 2px; vertical-align: -2px; background: var(--accent); animation: blink 1s steps(1) infinite; }
-  @keyframes blink { 50% { opacity: 0; } }
   .avatar-ring { cursor: pointer; }
   .avatar-ring.boing { animation: boing .6s cubic-bezier(.3,1.6,.5,1); }
   @keyframes boing { 0% { transform: scale(1); } 40% { transform: scale(.94) rotate(-3deg); } 100% { transform: scale(1); } }
@@ -327,6 +327,20 @@
   .tl h4 { margin-top: 4px; font-family: var(--font-head); font-size: 17px; line-height: 1.3; }
   .tl .what { margin-top: 6px; color: var(--muted); font-size: 14.5px; }
 
+  /* dashboard lightbox */
+  .thumb.zoomable { cursor: zoom-in; }
+  .thumb.zoomable::after {
+    content: "⤢"; position: absolute; right: 12px; bottom: 12px; width: 34px; height: 34px; border-radius: 10px;
+    display: grid; place-items: center; background: var(--card); border: 1px solid var(--line); color: var(--accent);
+    font-size: 18px; opacity: 0; transition: opacity .25s;
+  }
+  .thumb.zoomable:hover::after { opacity: 1; }
+  .lightbox { position: fixed; inset: 0; z-index: 100; background: rgba(5, 12, 15, .86); display: grid; place-items: center; padding: 24px; cursor: zoom-out; animation: lbIn .25s ease; }
+  .lightbox[hidden] { display: none; }
+  .lightbox img { max-width: min(1300px, 100%); max-height: 88vh; border-radius: 12px; box-shadow: 0 30px 80px rgba(0,0,0,.5); background: #fff; }
+  .lb-close { position: absolute; top: 16px; right: 20px; width: 44px; height: 44px; border-radius: 12px; border: 0; background: rgba(255,255,255,.12); color: #fff; font-size: 28px; line-height: 1; cursor: pointer; }
+  @keyframes lbIn { from { opacity: 0; } to { opacity: 1; } }
+
   /* reveal on scroll */
   .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s, transform .7s; }
   .reveal.in { opacity: 1; transform: none; }
@@ -354,8 +368,8 @@
     .play-side { border-left: 0; border-top: 1px solid var(--line); }
     .logo-name { display: none; }
     .chip-a { right: -14%; }
-    .chip-b { left: -12%; bottom: auto; top: 4%; }
-    .bubble.code { top: auto; bottom: -6%; left: -16%; min-width: 0; }
+    .chip-b { left: -12%; }
+    .chip-py { left: -10%; top: 4%; }
     .avatar-wrap { margin-bottom: 26px; }
     .contact { padding: 44px 20px; }
     section.block { padding-top: 70px; }
@@ -372,7 +386,7 @@
       <a href="#about" data-i18n="nav.about">À propos</a>
       <a href="#skills" data-i18n="nav.skills">Compétences</a>
       <a href="#projects" data-i18n="nav.projects">Projets</a>
-      <a href="#certs" data-i18n="nav.certs">Certifications</a>
+      <!-- <a href="#certs" data-i18n="nav.certs">Certifications</a> -->
       <a href="#contact" data-i18n="nav.contact">Contact</a>
     </div>
     <div class="toggles">
@@ -403,7 +417,7 @@
       </div>
       <div class="avatar-wrap">
         <div class="avatar-ring" id="avatar" title=""><img src="avatar.jpg" alt="Avatar de Zineb Ennakhla" width="640" height="640"></div>
-        <div class="bubble code" aria-hidden="true"><span class="py">🐍 Python</span><code><span class="prompt">&gt;&gt;&gt;</span> <span id="pyLine"></span><span class="caret"></span></code></div>
+        <div class="float-chip chip-py">🐍 <b>Python</b></div>
         <div class="float-chip chip-a"><b>SQL</b> SELECT *</div>
         <div class="float-chip chip-b">📊 <b>Power BI</b></div>
       </div>
@@ -466,7 +480,7 @@
               <div class="when" data-i18n="j2.w">2025 – Présent</div>
               <h4 data-i18n="j2.t">Technicienne Spécialisée en Intelligence Artificielle</h4>
               <div class="where" data-i18n="j2.p">Option Assistante Data Analyste · OFPPT, ISTA NTIC, Tanger</div>
-              <div class="what" data-i18n="j2.d">Python, SQL, statistiques, Power BI, Machine Learning et Deep Learning. Projets : MaisonLux, NeuroDetect et GlutiSafe.</div>
+              <div class="what" data-i18n="j2.d">Python, SQL, statistiques, Power BI, Machine Learning et Deep Learning. Projets : analyse marketing, prédiction des frais médicaux, MaisonDeLUX, NeuroDetect et GlutiSafe.</div>
             </div>
             <div class="tl">
               <div class="when">2025</div>
@@ -552,25 +566,6 @@
 
     <div class="projects" id="projectGrid">
 
-      <article class="proj" data-cat="eda ml e2e">
-        <div class="thumb"><span class="cat">End-to-End</span>
-          <svg viewBox="0 0 240 140" fill="none">
-            <path d="M20 120h200" stroke="var(--line)" stroke-width="2"/>
-            <path d="M30 100l35-20 30 10 35-35 30 12 50-40" stroke="var(--accent)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M30 100l35-20 30 10 35-35 30 12 50-40V120H30z" fill="var(--accent)" opacity=".12"/>
-            <g transform="translate(150 70)"><path d="M0 22L22 4l22 18" stroke="var(--warm)" stroke-width="3.5" stroke-linejoin="round"/><rect x="7" y="20" width="30" height="24" rx="3" stroke="var(--warm)" stroke-width="3.5"/></g>
-            <circle cx="210" cy="27" r="6" fill="var(--card)" stroke="var(--accent)" stroke-width="3"/>
-          </svg>
-        </div>
-        <div class="proj-body">
-          <h3>MaisonLux Maroc</h3>
-          <div class="sub" data-i18n="p1.sub">Prédiction des prix immobiliers</div>
-          <p data-i18n="p1.desc">Nettoyage, analyse et visualisation de données d'annonces immobilières au Maroc, puis construction d'un modèle de prédiction des prix.</p>
-          <div class="tags"><span class="tag">Python</span><span class="tag">Data Cleaning</span><span class="tag">EDA</span><span class="tag">Machine Learning</span></div>
-          <div class="proj-links"><a href="https://github.com/zineb-stack" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a11.5 11.5 0 0 0-3.6 22.4c.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.2c0 .3.2.7.8.6A11.5 11.5 0 0 0 12 .5z"/></svg>GitHub</a></div>
-        </div>
-      </article>
-
       <article class="proj" data-cat="eda bi">
         <div class="thumb"><span class="cat">Data Viz & BI</span>
           <svg viewBox="0 0 240 140" fill="none">
@@ -583,14 +578,53 @@
           </svg>
         </div>
         <div class="proj-body">
-          <h3 data-i18n="p2.title">Analyse & visualisation de données</h3>
-          <div class="sub" data-i18n="p2.sub">Qualité des données, indicateurs et dashboards</div>
-          <p data-i18n="p2.desc">Nettoyage et contrôle de la qualité de jeux de données, définition d'indicateurs, puis création de visualisations et de dashboards pour faciliter la lecture des résultats.</p>
-          <div class="tags"><span class="tag">Data Cleaning</span><span class="tag">KPIs</span><span class="tag">Dashboards</span></div>
-          <div class="proj-links"><a href="https://github.com/zineb-stack" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a11.5 11.5 0 0 0-3.6 22.4c.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.2c0 .3.2.7.8.6A11.5 11.5 0 0 0 12 .5z"/></svg>GitHub</a></div>
+          <h3 data-i18n="pm.t">Analyse marketing</h3>
+          <div class="sub" data-i18n="pm.sub">Comprendre les clients et les campagnes</div>
+          <p data-i18n="pm.desc">Analyse statistique de 1 200 clients : EDA, tests statistiques, ACP et segmentation K-means pour orienter les campagnes marketing.</p>
+          <div class="tags"><span class="tag">Pandas</span><span class="tag">Seaborn</span><span class="tag">SciPy</span><span class="tag">ACP</span><span class="tag">K-means</span></div>
+          <div class="proj-links"><a href="https://github.com/zineb-stack/analyse_marketing" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a11.5 11.5 0 0 0-3.6 22.4c.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.2c0 .3.2.7.8.6A11.5 11.5 0 0 0 12 .5z"/></svg>GitHub</a></div>
         </div>
       </article>
-
+      <article class="proj" data-cat="bi">
+        <div class="thumb zoomable" role="button" tabindex="0" aria-label="Dashboard Power BI des barrages du bassin Tensift"><span class="cat">Power BI</span><img src="projects/bi-barrages-tensift.jpg" alt="Dashboard Power BI des barrages du bassin Tensift" loading="lazy"></div>
+        <div class="proj-body">
+          <h3 data-i18n="bi1.t">Barrages du bassin Tensift</h3>
+          <div class="sub" data-i18n="bi1.sub">Dashboard Power BI · ressources en eau</div>
+          <p data-i18n="bi1.desc">Suivi de 5 barrages : taux de remplissage, évolution de la réserve totale (Mm³), carte du bassin et filtre par période. Données : ABHT.</p>
+          <div class="tags"><span class="tag">Power BI</span><span class="tag">KPIs</span><span class="tag">Carte</span><span class="tag">Séries temporelles</span></div>
+          <div class="proj-links"><a href="#" class="primary zoom-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg><span data-i18n="lnk.dash">Voir le dashboard</span></a></div>
+        </div>
+      </article>
+      <article class="proj" data-cat="bi">
+        <div class="thumb zoomable" role="button" tabindex="0" aria-label="Dashboard Power BI sur les habitudes de lecture de la génération Z"><span class="cat">Power BI</span><img src="projects/bi-gen-z-lecture.jpg" alt="Dashboard Power BI sur les habitudes de lecture de la génération Z" loading="lazy"></div>
+        <div class="proj-body">
+          <h3 data-i18n="bi2.t">La génération Z lit encore</h3>
+          <div class="sub" data-i18n="bi2.sub">Dashboard Power BI · enquête auprès d'étudiants</div>
+          <p data-i18n="bi2.desc">Analyse de 227 réponses : types de lecture, lieux et moments préférés, effet du Covid et modes d'apprentissage, avec filtres par sexe et milieu.</p>
+          <div class="tags"><span class="tag">Power BI</span><span class="tag">Enquête</span><span class="tag">Filtres interactifs</span><span class="tag">Visualisation</span></div>
+          <div class="proj-links"><a href="#" class="primary zoom-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg><span data-i18n="lnk.dash">Voir le dashboard</span></a></div>
+        </div>
+      </article>
+      <article class="proj" data-cat="eda ml e2e">
+        <div class="thumb chart"><span class="cat">End-to-End</span><img src="projects/insurance.jpg" alt="Valeurs réelles et prédites par le Random Forest" loading="lazy"></div>
+        <div class="proj-body">
+          <h3 data-i18n="pi.t">Prédiction des frais médicaux</h3>
+          <div class="sub" data-i18n="pi.sub">Assurance santé · Random Forest (R² = 0,90)</div>
+          <p data-i18n="pi.desc">Estimation des frais médicaux annuels d'un assuré : analyse exploratoire, comparaison de 5 modèles de Machine Learning et application Streamlit.</p>
+          <div class="tags"><span class="tag">Python</span><span class="tag">Scikit-learn</span><span class="tag">Random Forest</span><span class="tag">Streamlit</span></div>
+          <div class="proj-links"><a href="https://insurance-zineb.streamlit.app/" target="_blank" rel="noopener" class="primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg><span data-i18n="lnk.demo">Démo</span></a><a href="https://github.com/zineb-stack/insurance" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a11.5 11.5 0 0 0-3.6 22.4c.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.2c0 .3.2.7.8.6A11.5 11.5 0 0 0 12 .5z"/></svg>GitHub</a></div>
+        </div>
+      </article>
+      <article class="proj" data-cat="ml e2e">
+        <div class="thumb"><span class="cat">End-to-End</span><img src="projects/maisondelux.jpg" alt="Page d'accueil du site MaisonDeLUX" loading="lazy"></div>
+        <div class="proj-body">
+          <h3>MaisonDeLUX</h3>
+          <div class="sub" data-i18n="pd.sub">Valorisation immobilière au Maroc</div>
+          <p data-i18n="pd.desc">Plateforme d'intelligence immobilière : estimation de la valeur des biens ville par ville, à partir de modèles locaux et de données documentées.</p>
+          <div class="tags"><span class="tag">Machine Learning</span><span class="tag">Application web</span><span class="tag">FR / AR</span></div>
+          <div class="proj-links"><a href="https://maison-de-lux.vercel.app/fr" target="_blank" rel="noopener" class="primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg><span data-i18n="lnk.site">Site</span></a><a href="https://github.com/zineb-stack/MaisonDeLUX" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a11.5 11.5 0 0 0-3.6 22.4c.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.2c0 .3.2.7.8.6A11.5 11.5 0 0 0 12 .5z"/></svg>GitHub</a></div>
+        </div>
+      </article>
       <article class="proj" data-cat="ml">
         <div class="thumb"><span class="cat">ML / DL</span>
           <svg viewBox="0 0 240 140" fill="none">
@@ -604,31 +638,20 @@
         </div>
         <div class="proj-body">
           <h3>NeuroDetect</h3>
-          <div class="sub" data-i18n="p3.sub">Détection de tumeurs cérébrales</div>
-          <p data-i18n="p3.desc">Application desktop de détection de tumeurs cérébrales sur images IRM, basée sur un réseau de neurones convolutif (CNN) avec MobileNetV2.</p>
-          <div class="tags"><span class="tag">Deep Learning</span><span class="tag">CNN</span><span class="tag">MobileNetV2</span></div>
-          <div class="proj-links"><a href="https://github.com/zineb-stack" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a11.5 11.5 0 0 0-3.6 22.4c.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.2c0 .3.2.7.8.6A11.5 11.5 0 0 0 12 .5z"/></svg>GitHub</a></div>
+          <div class="sub" data-i18n="pn.sub">Détection de tumeurs cérébrales</div>
+          <p data-i18n="pn.desc">Application de bureau qui classe les images IRM en 4 catégories avec un réseau de neurones convolutif (MobileNetV2). Projet réalisé en équipe.</p>
+          <div class="tags"><span class="tag">Deep Learning</span><span class="tag">CNN</span><span class="tag">MobileNetV2</span><span class="tag">PySide6</span></div>
+          <div class="proj-links"><a href="https://github.com/zineb-stack/Detection-des-anomalies-cerebrales-par-CNN" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a11.5 11.5 0 0 0-3.6 22.4c.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.2c0 .3.2.7.8.6A11.5 11.5 0 0 0 12 .5z"/></svg>GitHub</a></div>
         </div>
       </article>
-
       <article class="proj" data-cat="e2e">
-        <div class="thumb"><span class="cat">End-to-End</span>
-          <svg viewBox="0 0 240 140" fill="none">
-            <rect x="82" y="8" width="76" height="124" rx="14" fill="var(--card)" stroke="var(--line)" stroke-width="2.5"/>
-            <rect x="96" y="30" width="48" height="40" rx="4" stroke="var(--accent)" stroke-width="3"/>
-            <g stroke="var(--text)" stroke-width="2.5" opacity=".7"><path d="M102 38v24M107 38v24M113 38v24M117 38v24M123 38v24M129 38v24M133 38v24M138 38v24"/></g>
-            <path d="M92 50h56" stroke="var(--warm)" stroke-width="2.5"/>
-            <rect x="96" y="84" width="48" height="22" rx="11" fill="var(--accent)" opacity=".18"/>
-            <path d="M110 95l5 5 10-10" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M40 40c-8 10-8 30 0 40M200 40c8 10 8 30 0 40M54 48c-4 6-4 18 0 24M186 48c4 6 4 18 0 24" stroke="var(--line)" stroke-width="3" stroke-linecap="round"/>
-          </svg>
-        </div>
+        <div class="thumb"><span class="cat">End-to-End</span><img src="projects/glutisafe.jpg" alt="Page d'accueil du site GlutiSafe" loading="lazy"></div>
         <div class="proj-body">
           <h3>GlutiSafe</h3>
-          <div class="sub" data-i18n="p4.sub">Détection de gluten par scan</div>
-          <p data-i18n="p4.desc">Application qui détecte la présence de gluten dans les produits alimentaires grâce à un simple scan.</p>
-          <div class="tags"><span class="tag" data-i18n="p4.t1">Application</span><span class="tag" data-i18n="p4.t2">Scan</span></div>
-          <div class="proj-links"><a href="https://github.com/zineb-stack" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a11.5 11.5 0 0 0-3.6 22.4c.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.2c0 .3.2.7.8.6A11.5 11.5 0 0 0 12 .5z"/></svg>GitHub</a></div>
+          <div class="sub" data-i18n="pg.sub">Détection de gluten par scan</div>
+          <p data-i18n="pg.desc">Application web qui scanne les ingrédients d'un produit et détecte les risques liés au gluten en quelques secondes.</p>
+          <div class="tags"><span class="tag">Application web</span><span class="tag">Scan</span><span class="tag">Analyse des ingrédients</span></div>
+          <div class="proj-links"><a href="https://gluti-safe-v2.vercel.app/" target="_blank" rel="noopener" class="primary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg><span data-i18n="lnk.site">Site</span></a><a href="https://github.com/zineb-stack/GlutiSafe_v2" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a11.5 11.5 0 0 0-3.6 22.4c.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.2c0 .3.2.7.8.6A11.5 11.5 0 0 0 12 .5z"/></svg>GitHub</a></div>
         </div>
       </article>
 
@@ -640,12 +663,13 @@
     </div>
   </section>
 
-  <!-- CERTIFICATIONS -->
+  <!-- CERTIFICATIONS : section masquée pour le moment, à réactiver quand les certificats seront prêts
+  <!~~ CERTIFICATIONS ~~>
   <section class="block reveal" id="certs">
     <div class="kicker" data-i18n="cert.kicker">Certifications</div>
     <h2 class="sec-title" data-i18n="cert.title">Mes certifications</h2>
     <div class="certs">
-      <!-- Pour chaque certification, copier ce bloc : nom, organisme, année, lien -->
+      <!~~ Pour chaque certification, copier ce bloc : nom, organisme, année, lien ~~>
       <a class="cert" href="#" target="_blank" rel="noopener">
         <div class="cert-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="M8.5 14L7 22l5-3 5 3-1.5-8"/></svg></div>
         <div><h3>[Nom de la certification]</h3><div class="cert-meta">[Organisme] · [Année]</div></div>
@@ -663,6 +687,8 @@
       </a>
     </div>
   </section>
+
+  -->
 
   <!-- CONTACT -->
   <section class="contact reveal" id="contact">
@@ -681,6 +707,11 @@
     </div>
   </section>
 </main>
+
+<div class="lightbox" id="lightbox" hidden>
+  <button class="lb-close" id="lbClose" aria-label="Fermer">×</button>
+  <img id="lbImg" alt="">
+</div>
 
 <button class="to-top" id="toTop" aria-label="Haut de page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg></button>
 
@@ -715,15 +746,21 @@ const T = {
     "sk.soft": "Soft skills", "sk.s1": "Curiosity", "sk.s2": "Rigor", "sk.s3": "Analytical mindset", "sk.s4": "Teamwork",
     "proj.kicker": "Projects", "proj.title": "What I've built", "proj.sub": "Filter by category to see each step of working with data.",
     "f.all": "All", "f.eda": "Collection, Cleaning & EDA", "f.e2e": "End-to-End Projects",
-    "p1.sub": "Real estate price prediction",
-    "p1.desc": "Cleaning, analysis and visualization of Moroccan real estate listings, then building a model to predict prices.",
-    "p2.title": "Data analysis & visualization", "p2.sub": "Data quality, KPIs and dashboards",
-    "p2.desc": "Cleaning and quality checks on datasets, defining indicators, then building visualizations and dashboards that make results easy to read.",
-    "p3.sub": "Brain tumor detection",
-    "p3.desc": "Desktop app that detects brain tumors on MRI images, built on a convolutional neural network (CNN) with MobileNetV2.",
-    "p4.sub": "Gluten detection by scan",
-    "p4.desc": "App that detects gluten in food products with a simple scan.",
-    "p4.t1": "App", "p4.t2": "Scan",
+    "lnk.demo": "Demo", "lnk.site": "Website", "lnk.dash": "View dashboard",
+    "bi1.t": "Tensift basin dams", "bi1.sub": "Power BI dashboard · water resources",
+    "bi1.desc": "Monitoring 5 dams: fill rate, total reserve over time (Mm³), basin map and a period filter. Data: ABHT.",
+    "bi2.t": "Gen Z is still reading", "bi2.sub": "Power BI dashboard · student survey",
+    "bi2.desc": "Analysis of 227 responses: reading types, favorite places and times, Covid effect and learning modes, with filters by gender and location.",
+    "pm.t": "Marketing analysis", "pm.sub": "Understanding customers and campaigns",
+    "pm.desc": "Statistical analysis of 1,200 customers: EDA, statistical tests, PCA and K-means segmentation to guide marketing campaigns.",
+    "pi.t": "Medical cost prediction", "pi.sub": "Health insurance · Random Forest (R² = 0.90)",
+    "pi.desc": "Estimating a policyholder's yearly medical costs: exploratory analysis, comparison of 5 Machine Learning models and a Streamlit app.",
+    "pd.sub": "Real estate valuation in Morocco",
+    "pd.desc": "Real estate intelligence platform: estimating property values city by city, using local models and documented data.",
+    "pn.sub": "Brain tumor detection",
+    "pn.desc": "Desktop app that classifies MRI images into 4 categories with a convolutional neural network (MobileNetV2). Team project.",
+    "pg.sub": "Gluten detection by scan",
+    "pg.desc": "Web app that scans a product's ingredients and detects gluten risks in seconds.",
     "empty.title": "Coming soon!", "empty.text": "Projects in this category are being prepared.",
     "more.open": "Learn more about me", "more.close": "Show less", "more.who": "Who am I?", "more.journey": "My journey",
     "more.p1": "I'm training as a Specialized Technician in Artificial Intelligence at ISTA NTIC in Tangier (OFPPT), Data Analyst Assistant track.",
@@ -736,7 +773,7 @@ const T = {
     "j1.d": "Data analysis, dashboards and AI models for businesses and project owners.",
     "j2.w": "2025 – Present", "j2.t": "Specialized Technician in Artificial Intelligence",
     "j2.p": "Data Analyst Assistant track · OFPPT, ISTA NTIC, Tangier",
-    "j2.d": "Python, SQL, statistics, Power BI, Machine Learning and Deep Learning. Projects: MaisonLux, NeuroDetect and GlutiSafe.",
+    "j2.d": "Python, SQL, statistics, Power BI, Machine Learning and Deep Learning. Projects: marketing analysis, medical cost prediction, MaisonDeLUX, NeuroDetect and GlutiSafe.",
     "j3.t": "High School Diploma in Physical Sciences",
     "contact.title": "Have a project in mind? 🤝",
     "contact.text": "Data analysis, a dashboard, an AI model… Tell me about your project and I'll get back to you quickly.",
@@ -873,7 +910,7 @@ setInterval(() => {
 }, 2400);
 
 /* ---------------- smooth in-page links (also inside Streamlit's frame) ---------------- */
-document.querySelectorAll('a[href^="#"]').forEach(link => link.addEventListener("click", e => {
+document.querySelectorAll('a[href^="#"]:not(.zoom-btn)').forEach(link => link.addEventListener("click", e => {
   const id = link.getAttribute("href").slice(1);
   const target = id ? document.getElementById(id) : null;
   if (!target && id) return;
@@ -881,24 +918,9 @@ document.querySelectorAll('a[href^="#"]').forEach(link => link.addEventListener(
   (target || document.body).scrollIntoView({ behavior: "smooth", block: "start" });
 }));
 
-/* ---------------- python bubble (typing) ---------------- */
-const PY = ['import pandas as pd', 'df = pd.read_csv("data.csv")', 'df = df.dropna()', 'df.describe()', 'model.fit(X, y)', 'plt.show()  # 📊', 'print("Salam! 👋")'];
-const pyEl = document.getElementById("pyLine");
-let pyI = 0, pyTimer = null;
-function typeLine(txt) {
-  clearTimeout(pyTimer);
-  let k = 0;
-  (function tick() {
-    pyEl.textContent = txt.slice(0, k);
-    if (k++ < txt.length) pyTimer = setTimeout(tick, 55);
-    else pyTimer = setTimeout(() => { pyI = (pyI + 1) % PY.length; typeLine(PY[pyI]); }, 1700);
-  })();
-}
-typeLine(PY[0]);
 const avatar = document.getElementById("avatar");
 avatar.addEventListener("click", () => {
   avatar.classList.remove("boing"); void avatar.offsetWidth; avatar.classList.add("boing");
-  pyI = (pyI + 1) % PY.length; typeLine(PY[pyI]);
 });
 
 /* ---------------- know more ---------------- */
@@ -934,6 +956,21 @@ if (matchMedia("(hover: hover) and (pointer: fine)").matches && !matchMedia("(pr
     card.addEventListener("mouseleave", () => { card.style.transform = ""; });
   });
 }
+
+/* ---------------- dashboard lightbox ---------------- */
+const lb = document.getElementById("lightbox"), lbImg = document.getElementById("lbImg");
+function openLb(card) {
+  const img = card.querySelector(".thumb img");
+  lbImg.src = img.src; lbImg.alt = img.alt; lb.hidden = false;
+}
+function closeLb() { lb.hidden = true; }
+document.querySelectorAll(".thumb.zoomable").forEach(t => {
+  t.addEventListener("click", () => openLb(t.closest(".proj")));
+  t.addEventListener("keydown", e => { if (e.key === "Enter") openLb(t.closest(".proj")); });
+});
+document.querySelectorAll(".zoom-btn").forEach(b => b.addEventListener("click", e => { e.preventDefault(); e.stopPropagation(); openLb(b.closest(".proj")); }));
+lb.addEventListener("click", closeLb);
+addEventListener("keydown", e => { if (e.key === "Escape" && !lb.hidden) closeLb(); });
 
 /* ---------------- init ---------------- */
 document.getElementById("yr").textContent = new Date().getFullYear();
